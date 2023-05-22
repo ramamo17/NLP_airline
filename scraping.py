@@ -7,9 +7,11 @@ from bs4 import BeautifulSoup
 session = requests.Session()
 
 # %%
-my_headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS          X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko)          Chrome/71.0.3578.98 Safari/537.36",           "Accept":"text/html,application/xhtml+xml,application/xml;          q=0.9,image/webp,image/apng,*/*;q=0.8"}
+my_headers = {"User-Agent": "Chrome/71.0.3578.98 Safari/537.36", "Accept":"text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,image/apng,*/*;q=0.8"}
 # %%
-url = 'https://communityfoundations.ca/find-a-community-foundation/'
+# url = 'https://communityfoundations.ca/find-a-community-foundation-map/'
+# url = 'https://www.tripadvisor.fr/Airline_Review-d8728997-Reviews-Air-Botswana'
+url = "https://www.tripadvisor.fr/Airline_Review-d8728984-Reviews-Adria-Airways-No-Longer-Operating"
 response = session.get(url, headers=my_headers)
 # %%
 html_soup = BeautifulSoup(response.text, 'html.parser')
@@ -19,10 +21,24 @@ container = html_soup.find_all(["h2", "h3"],
 # %%
 url = 'https://www.tripadvisor.fr/Airline_Review-d8728997-Reviews-Air-Botswana'
 response_ta = session.get(url, headers=my_headers)
-soup = BeautifulSoup()
-reviews = soup.find_all('span')
+soup = BeautifulSoup(response_ta.text, 'html.parser')
+# %%
+url = 'https://www.tripadvisor.com/Airline_Review-d8728997-Reviews-Air-Botswana'
+response_ta = session.get(url, headers=my_headers)
+soup = BeautifulSoup(response_ta.text, 'html.parser')
+# %%
+reviews = soup.find_all('div', class_="lgfjP Gi z pBVnE MD bZHZM")
+# reviews = soup.find_all('span', {"class": "QewHA H4 _a"})
+# reviews = soup.find_all(["div", "span"], 
+#                                class_=lambda x: x != 'hidden')
+for review in reviews:
+    rating = review.find('div', class_="Hlmiy F1").text
+    review_comment = review.find('span', class_='QewHA H4 _a').text
+    print(review_comment, '---------------------------')
+    review_text = review.find('p', class_='review-text').text
 # %%
 for lines in reviews:
+    print(lines.text)
     if lines.name == 'h2': 
         province = lines.text
         print('In', province, "\n")
