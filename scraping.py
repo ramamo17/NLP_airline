@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+
+key_api_google="AIzaSyDcZIgjyoPZ5suy-zT6BbsnsjVf_Lt6eRk"
 # %%
 session = requests.Session()
 
@@ -10,8 +12,9 @@ session = requests.Session()
 my_headers = {"User-Agent": "Chrome/71.0.3578.98 Safari/537.36", "Accept":"text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,image/apng,*/*;q=0.8"}
 # %%
 # url = 'https://communityfoundations.ca/find-a-community-foundation-map/'
+url = 'https://www.google.com/search?gs_ssp=eJzj4tTP1TcwzDE1MjVgtFI1qDAxTzUzN00yTEs0SzROMkyxMqiwTDG3SElNMTcxTkmyMDEy8uLJL8qpVEjMLCrILyoBAClAEpk&q=orly+airport&oq=orly&aqs=chrome.1.69i57j46i67i175i199i433i650j0i512j0i433i512j46i131i175i199i433i512l2j0i433i512j0i131i433i512j0i433i512j0i271.2999j0j7&sourceid=chrome&ie=UTF-8#lrd=0x47e675b1fa6a3b1d:0x9d78ded743db8422,1,,,,'
 # url = 'https://www.tripadvisor.fr/Airline_Review-d8728997-Reviews-Air-Botswana'
-url = "https://www.tripadvisor.fr/Airline_Review-d8728984-Reviews-Adria-Airways-No-Longer-Operating"
+# url = "https://www.tripadvisor.fr/Airline_Review-d8728984-Reviews-Adria-Airways-No-Longer-Operating"
 response = session.get(url, headers=my_headers)
 # %%
 html_soup = BeautifulSoup(response.text, 'html.parser')
