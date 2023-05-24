@@ -191,7 +191,6 @@ for url in urls:
     # pattern_compagnie = r"https://fr\.custplace\.com/|\?page=\d*"
     pattern_compagnie = r"https://www\.poulpeo\.com/avis/|\.htm$"
     compagnie_aerienne = re.sub(pattern_compagnie, "", str)
-    print('hey')
     #notes de chaque commentaire
     # notes_elements = html_soup.find_all('div', class_=['inline-block', 'mr-1.5', 'mb-2', 'aggregateRating'])
     # notes = [element['class'][-1][-1] for element in notes_elements]
@@ -220,5 +219,5 @@ for url in urls:
 # Affichage du DataFrame final
 print(df)
 
-df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.csv")
+df.to_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.xlsx")
 # %%
