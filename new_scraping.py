@@ -105,12 +105,66 @@ for url in urls:
 # Affichage du DataFrame final
 print(df)
 
+df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\first_dataset.csv")
 # %%
 
-urls = [
-    "https://fr.custplace.com/air-france",
-    "https://fr.custplace.com/air-france?page=2",
-    "https://fr.custplace.com/air-france?page=3",
-    "https://fr.custplace.com/air-france?page=4"
+urls = []
+for i in range(1,14):
+    urls.append(f"https://fr.custplace.com/air-france?page={i}")
+
+# DataFrame initial (vide)
+df_2 = pd.DataFrame(columns=['note_globale', 'compagnie_aerienne', 'avis', 'note'])
+
+for url in urls:
+    response = requests.get(url)
+    html_soup = BeautifulSoup(response.content, 'html.parser')
+
+    # # Extraction des données
+    # compagnie_element = soup.find('span', class_='bold uppercase')
+    # compagnie_aerienne = compagnie_element.text.strip() if compagnie_element else None
+
+    # avis_elements = soup.find_all('p', class_='avis-texte')
+    # avis = [element.text for element in avis_elements]
+
+    # notes_elements = soup.find_all('meta', itemprop='ratingValue')
+    # notes = [float(element['content']) for element in notes_elements]
+    # Utilisation d'une expression régulière pour extraire le nom du site
+    pattern = r"https?://(?:www\.)?([^/?]+)"
+    match = re.search(pattern, url)
+    nom_site = match.group(1)
     
-]
+    #nom compagnie aérienne
+    pattern_compagnie = r"https://fr\.custplace\.com/|\?page=\d+"
+    compagnie_aerienne = re.sub(pattern, "", str)
+    
+    #notes de chaque commentaire
+    notes_elements = html_soup.find_all('div', class_='inline-block')
+    note = [element['class'][-1][-1] for element in notes_elements]
+    
+    #commentaires
+    avis_elements = html_soup.find_all('p', class_='mb-3')
+    avis = [float(element.meta['content']) for element in avis_elements]
+
+    # la note moyenne de la compagnie sur le site
+    notes_elements = html_soup.find_all('meta', itemprop='ratingValue')
+    toutes_notes = [float(element['content']) for element in notes_elements]
+    note_globale = toutes_notes[0]
+    notes = toutes_notes[1:]
+
+    # Création du DataFrame temporaire pour les données de l'URL actuelle
+    data = {
+        'site' : [nom_site]*len(avis),
+        'compagnie_aerienne': [compagnie_aerienne] * len(avis),
+        'avis': avis,
+        'note': notes,
+        'note_globale' : [note_globale]*len(avis)
+    }
+    df_temp = pd.DataFrame(data)
+
+    # Concaténation du DataFrame temporaire avec le DataFrame principal
+    df_2 = pd.concat([df_2, df_temp], ignore_index=True)
+
+# Affichage du DataFrame final
+print(df_2)
+
+df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\first_dataset.csv")
