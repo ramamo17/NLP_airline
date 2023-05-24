@@ -81,9 +81,6 @@ for url in urls:
     avis_elements = html_soup.find_all('p', class_='avis-texte')
     avis = [element.text for element in avis_elements]
 
-    notes_elements = html_soup.find_all('span', class_='note')
-    notes = [float(element.meta['content']) for element in notes_elements]
-
     notes_elements = html_soup.find_all('meta', itemprop='ratingValue')
     toutes_notes = [float(element['content']) for element in notes_elements]
     note_globale = toutes_notes[0]
@@ -112,9 +109,6 @@ urls = []
 for i in range(1,14):
     urls.append(f"https://fr.custplace.com/air-france?page={i}")
 
-# DataFrame initial (vide)
-df_2 = pd.DataFrame(columns=['note_globale', 'compagnie_aerienne', 'avis', 'note'])
-
 for url in urls:
     response = requests.get(url)
     html_soup = BeautifulSoup(response.content, 'html.parser')
@@ -134,37 +128,97 @@ for url in urls:
     nom_site = match.group(1)
     
     #nom compagnie aérienne
-    pattern_compagnie = r"https://fr\.custplace\.com/|\?page=\d+"
-    compagnie_aerienne = re.sub(pattern, "", str)
+    pattern_compagnie = r"https://fr\.custplace\.com/|\?page=\d*"
+    compagnie_aerienne = re.sub(pattern_compagnie, "", str)
     
     #notes de chaque commentaire
-    notes_elements = html_soup.find_all('div', class_='inline-block')
-    note = [element['class'][-1][-1] for element in notes_elements]
+    # notes_elements = html_soup.find_all('div', class_=['inline-block', 'mr-1.5', 'mb-2', 'aggregateRating'])
+    # notes = [element['class'][-1][-1] for element in notes_elements]
+    # notes = [x for x in notes if x.isdigit()]
     
     #commentaires
     avis_elements = html_soup.find_all('p', class_='mb-3')
-    avis = [float(element.meta['content']) for element in avis_elements]
+    avis = [element.text for element in avis_elements]
 
     # la note moyenne de la compagnie sur le site
-    notes_elements = html_soup.find_all('meta', itemprop='ratingValue')
-    toutes_notes = [float(element['content']) for element in notes_elements]
-    note_globale = toutes_notes[0]
-    notes = toutes_notes[1:]
+    note_globale = html_soup.select('span', class_=["text-lg", "xs:text-xl", "md:text-xxl", "font-medium"])
 
     # Création du DataFrame temporaire pour les données de l'URL actuelle
     data = {
         'site' : [nom_site]*len(avis),
         'compagnie_aerienne': [compagnie_aerienne] * len(avis),
         'avis': avis,
-        'note': notes,
-        'note_globale' : [note_globale]*len(avis)
+        'note': '0', #notes,
+        'note_globale' : '0', #[note_globale]*len(avis)
     }
     df_temp = pd.DataFrame(data)
 
     # Concaténation du DataFrame temporaire avec le DataFrame principal
-    df_2 = pd.concat([df_2, df_temp], ignore_index=True)
+    df = pd.concat([df, df_temp], ignore_index=True)
 
 # Affichage du DataFrame final
-print(df_2)
+print(df)
 
-df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\first_dataset.csv")
+df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.csv")
+
+# %%
+#Luftansa
+urls = ["https://www.poulpeo.com/avis/lufthansa.htm",
+"https://www.poulpeo.com/avis/emirates.htm",
+"https://www.poulpeo.com/avis/air-caraibes.htm",
+"https://www.poulpeo.com/avis/vueling.htm", 
+"https://www.poulpeo.com/avis/qatar-airways.htm",
+"https://www.poulpeo.com/avis/tap-portugal-fr.htm",
+"https://www.poulpeo.com/avis/air-france.htm"]
+
+for url in urls:
+    response = requests.get(url)
+    html_soup = BeautifulSoup(response.content, 'html.parser')
+
+    # # Extraction des données
+    # compagnie_element = soup.find('span', class_='bold uppercase')
+    # compagnie_aerienne = compagnie_element.text.strip() if compagnie_element else None
+
+
+    # notes_elements = soup.find_all('meta', itemprop='ratingValue')
+    # notes = [float(element['content']) for element in notes_elements]
+    # Utilisation d'une expression régulière pour extraire le nom du site
+    pattern = r"https?://(?:www\.)?([^/?]+)"
+    match = re.search(pattern, url)
+    nom_site = match.group(1)
+    
+    #nom compagnie aérienne
+    # pattern_compagnie = r"https://fr\.custplace\.com/|\?page=\d*"
+    pattern_compagnie = r"https://www\.poulpeo\.com/avis/|\.htm$"
+    compagnie_aerienne = re.sub(pattern_compagnie, "", str)
+    print('hey')
+    #notes de chaque commentaire
+    # notes_elements = html_soup.find_all('div', class_=['inline-block', 'mr-1.5', 'mb-2', 'aggregateRating'])
+    # notes = [element['class'][-1][-1] for element in notes_elements]
+    # notes = [x for x in notes if x.isdigit()]
+    
+    #commentaires
+    avis_elements = html_soup.find_all('div', class_='review-content')
+    avis = [element.text for element in avis_elements]
+
+    # # la note moyenne de la compagnie sur le site
+    # note_globale = html_soup.select('span', class_=["text-lg", "xs:text-xl", "md:text-xxl", "font-medium"])
+
+    # Création du DataFrame temporaire pour les données de l'URL actuelle
+    data = {
+        'site' : [nom_site]*len(avis),
+        'compagnie_aerienne': [compagnie_aerienne] * len(avis),
+        'avis': avis,
+        'note': '0', #notes,
+        'note_globale' : '0', #[note_globale]*len(avis)
+    }
+    df_temp = pd.DataFrame(data)
+
+    # Concaténation du DataFrame temporaire avec le DataFrame principal
+    df = pd.concat([df, df_temp], ignore_index=True)
+
+# Affichage du DataFrame final
+print(df)
+
+df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.csv")
+# %%
