@@ -165,6 +165,7 @@ print(df_with_stemming)
 
 # %%
 # sauvegarde 
+df_with_stemming.reset_index(drop=True, inplace=True)
 df_with_stemming.to_excel(r'C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\airlines_reviews_preprocessed_labeled.xlsx', index=False)
 
 # %%
