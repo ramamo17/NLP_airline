@@ -3,8 +3,8 @@ import re
 import pandas as pd
 from collections import Counter
 
-df = pd.read_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset_labeled.xlsx")
-
+# df = pd.read_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset_labeled.xlsx")
+df = pd.read_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.xlsx")
 
 # Fonction de prétraitement
 def preprocess_text(text):
