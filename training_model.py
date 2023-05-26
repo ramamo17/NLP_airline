@@ -48,15 +48,68 @@ y_pred = model.predict(vectorizer.transform(unlabeled_data['avis']))
 unlabeled_data[categories] = y_pred
 # Concaténez les données labellisées et non labellisées
 classified_data = pd.concat([labeled_data, unlabeled_data])
-
+classified_data.fillna(0)
 # Affichez les résultats
 print(classified_data)
 
 unlabeled_data.to_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\prediction.xlsx")
 classified_data.to_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\final_data.xlsx")
 
+# INFERENCE
+# %%
+# on veut tester notre modèle
+
+text_test = 'Les billets étaient vraiment trop chères je ne suis pas content'
+
+
+
+# %%
 #INSATISFAISANT
-# tentative avec du préent
+# tentative avec du préentrainé
+model_name = 'bert-base-multilingual-cased'
+tokenizer = BertTokenizer.from_pretrained(model_name)
+bert_model = TFBertModel.from_pretrained(model_name)
+
+# %%
+# Tokenisation des textes
+tokenized_texts = [tokenizer.tokenize(text) for text in X_labeled]
+
+# Ajout des tokens spéciaux [CLS] et [SEP]
+input_ids = [tokenizer.convert_tokens_to_ids(tokens) for tokens in tokenized_texts]
+input_ids = tf.keras.preprocessing.sequence.pad_sequences(input_ids, padding='post')
+
+# %%
+# Masque d'attention
+attention_mask = tf.where(X_labeled != 0, 1, 0)
+
+# Couche d'entrée
+input_layer = tf.keras.layers.Input(shape=(X_labeled.shape[1],), dtype=tf.int32)
+
+# Couche d'attention
+attention_layer = tf.keras.layers.Attention()([input_layer, attention_mask])
+
+# Couche BERT
+bert_output = bert_model(input_layer, attention_mask=attention_mask)[0]
+
+# Couche de classification
+output_layer = tf.keras.layers.Dense(units=4, activation='sigmoid')(bert_output)
+
+# Création du modèle
+model = tf.keras.models.Model(inputs=input_layer, outputs=output_layer)
+
+# %%
+# Compilation
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# Préparation des données de sortie
+output_data = [data['cat1'], data['cat2'], data['cat3'], data['cat4']]
+
+# Entraînement
+model.fit(input_ids, output_data, epochs=10, batch_size=16)
+
+
+
+
 # %%
 
 #####################################################################

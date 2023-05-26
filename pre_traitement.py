@@ -45,7 +45,7 @@ def preprocess_text(text):
     return tokens
 # Appliquer la fonction de prétraitement à la colonne 'avis'
 df['avis'] = df['avis'].apply(preprocess_text)
-
+df['compagnie_aerienne'] = df['compagnie_aerienne'].apply(preprocess_text)
 print(df)
 
 # %%
