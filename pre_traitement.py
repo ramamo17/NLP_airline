@@ -7,7 +7,7 @@ from collections import Counter
 df = pd.read_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.xlsx")
 
 # Fonction de prétraitement
-def preprocess_text(text):
+def preprocess_text(text, tokenize=True):
     """_summary_
 
     Args:
@@ -38,14 +38,17 @@ def preprocess_text(text):
     text = re.sub(r'\\n', ' ', text)
     # Supprimer les espaces consécutifs
     text = re.sub(r' +', ' ', text)
-    # Tokenisation au niveau des espaces
-    tokens = text.split()
-    # Supprimer les mots de longueur inférieure à 2
-    tokens = [token for token in tokens if len(token) >= 3]
-    return tokens
+    if tokenize:
+        # Tokenisation au niveau des espaces
+        tokens = text.split()
+        # Supprimer les mots de longueur inférieure à 2
+        tokens = [token for token in tokens if len(token) >= 3]
+        return tokens
+    else:
+        return text
 # Appliquer la fonction de prétraitement à la colonne 'avis'
 df['avis'] = df['avis'].apply(preprocess_text)
-df['compagnie_aerienne'] = df['compagnie_aerienne'].apply(preprocess_text)
+df['compagnie_aerienne'] = df['compagnie_aerienne'].apply(preprocess_text,args=[False])
 print(df)
 
 # %%
