@@ -13,9 +13,8 @@ from sklearn.multioutput import MultiOutputClassifier
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
-from transformers import TFBertModel, BertTokenizer
 # %%
-df = pd.read_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\airlines_reviews_preprocessed_labeled.xlsx", index_col=False)
+df = pd.read_excel(r"airlines_reviews_preprocessed_labeled.xlsx", index_col=False)
 df.shape
 # %%
 categories = [x for x in df.columns if x not in ['Unnamed: 0', 'note_globale', 'site', 'compagnie_aerienne', 'note',
@@ -52,5 +51,5 @@ classified_data =classified_data.fillna(0)
 # Affichez les résultats
 print(classified_data)
 
-unlabeled_data.to_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\prediction.xlsx")
-classified_data.to_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\final_data.xlsx")
+unlabeled_data.to_excel(r"prediction.xlsx")
+classified_data.to_excel(r"final_data.xlsx")

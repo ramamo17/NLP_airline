@@ -4,7 +4,7 @@ import pandas as pd
 from collections import Counter
 
 # df = pd.read_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset_labeled.xlsx")
-df = pd.read_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.xlsx")
+df = pd.read_excel(r"df_2_dataset.xlsx")
 
 # Fonction de prétraitement
 def preprocess_text(text, tokenize=True):
@@ -169,6 +169,6 @@ print(df_with_stemming)
 # %%
 # sauvegarde 
 df_with_stemming.reset_index(drop=True, inplace=True)
-df_with_stemming.to_excel(r'C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\airlines_reviews_preprocessed_labeled.xlsx', index=False)
+df_with_stemming.to_excel(r'airlines_reviews_preprocessed_labeled.xlsx', index=False)
 
 # %%

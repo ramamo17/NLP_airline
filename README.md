@@ -32,17 +32,18 @@ Dans cette partie, nous expliquons comment utiliser chaque exécutable du projet
 ### 4.1. scraping.py
 
 `scraping.py` est le premier fichier exécutable du projet. Son rôle principal est de collecter des données à partir de sources en ligne et de les stocker dans un fichier Excel. Ce fichier Excel servira ensuite de base pour étiqueter les données.
+my_headers doit être modifié. En allant sur son navigateur par défaut et en le demandant ( rechercher "my user agent" dans le navigateur et le copier coller dans le code de `scraping.py`)
 
 Pour exécuter `scraping.py`, suivez les étapes suivantes :
 
 1. Assurez-vous d'avoir les prérequis nécessaires (voir section 2).
 2. Exécutez la commande suivante dans votre terminal : `python scraping.py`.
 3. Le script se connectera aux sources en ligne et collectera les données.
-4. Une fois le processus terminé, un fichier Excel contenant les données sera généré.
+4. Une fois le processus terminé, un fichier Excel df_2_dataset.xlsx contenant les données sera généré.
 
 ### 4.2. pre_traitement.py
 
-`pre_traitement.py` est le deuxième fichier exécutable du projet. Il effectue plusieurs étapes de prétraitement du texte sur les données labellisées extraites à partir du fichier Excel généré par `scraping.py`. Le prétraitement du texte comprend généralement des opérations telles que le nettoyage des données, la tokenization, la suppression des stopwords, etc. Ces étapes préparent les données pour l'entraînement du modèle.
+`pre_traitement.py` est le deuxième fichier exécutable du projet. Il effectue plusieurs étapes de prétraitement du texte sur les données labellisées extraites à partir du fichier Excel df_2_dataset.xlsx généré par `scraping.py`. Le prétraitement du texte comprend généralement des opérations telles que le nettoyage des données, la tokenization, la suppression des stopwords, etc. Ces étapes préparent les données pour l'entraînement du modèle. Elles ont été faites sant l'utilisation de librairies de NLP !
 
 Pour exécuter `pre_traitement.py`, suivez les étapes suivantes :
 
@@ -50,7 +51,7 @@ Pour exécuter `pre_traitement.py`, suivez les étapes suivantes :
 2. Placez le fichier Excel contenant les données labellisées dans le même répertoire que `pre_traitement.py`.
 3. Exécutez la commande suivante dans votre terminal : `python pre_traitement.py`.
 4. Le script effectuera les différentes étapes de prétraitement du texte sur les données.
-5. Une fois le processus terminé, un fichier Excel contenant les données prétraitées sera généré.
+5. Une fois le processus terminé, un fichier Excel airlines_reviews_preprocessed_labeled.xlsx contenant les données prétraitées sera généré.
 
 ### 4.3. training_model.py
 
@@ -59,10 +60,10 @@ Pour exécuter `pre_traitement.py`, suivez les étapes suivantes :
 Pour exécuter `training_model.py`, suivez les étapes suivantes :
 
 1. Assurez-vous d'avoir les prérequis nécessaires (voir section 2).
-2. Placez le fichier Excel contenant les données prétraitées et labellisées dans le même répertoire que `training_model.py`.
+2. Placez le fichier Excel contenant les données prétraitées et labellisées dans le même répertoire que `training_model.py` et airlines_reviews_preprocessed_labeled.xlsx.
 3. Exécutez la commande suivante dans votre terminal : `python training_model.py`.
 4. Le script effectuera l'entraînement du modèle en utilisant l'algorithme KNN Classifier.
-5. Une fois le processus terminé, un fichier Excel contenant les prédictions du modèle sera généré.
+5. Une fois le processus terminé, un fichier Excel final_data.xlsx contenant les prédictions du modèle sera généré.
 
 ## 5. Contributions
 

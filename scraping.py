@@ -102,7 +102,6 @@ for url in urls:
 # Affichage du DataFrame final
 print(df)
 
-df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\first_dataset.csv")
 # %%
 
 urls = []
@@ -159,7 +158,6 @@ for url in urls:
 # Affichage du DataFrame final
 print(df)
 
-df.to_csv(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.csv")
 
 # %%
 #Luftansa
@@ -219,5 +217,5 @@ for url in urls:
 # Affichage du DataFrame final
 print(df)
 
-df.to_excel(r"C:\Users\ramad\OneDrive - Université Paris-Dauphine\M2-IASD\NLP\NLP_airline\df_2_dataset.xlsx")
+df.to_excel(r"df_2_dataset.xlsx")
 # %%
