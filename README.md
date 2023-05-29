@@ -91,6 +91,7 @@ Il n'y en a pas
 Dans cette section, nous fournissons des informations de contact pour les développeurs ou les personnes responsables du projet Python. Cela peut inclure des adresses e-mail, des liens vers des profils GitHub, etc.
 
 morgan.ramadani@dauphine.eu
+izabell.iskandar@dauphine.eu
 
 ## 9. Remerciements
 
